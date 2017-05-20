@@ -47,5 +47,89 @@ namespace Locacao.Camadas.DAL
 
             return lstClientes;
         }
+
+        public void Insert (Model.Cliente cliente)
+        {
+            SqlConnection conexao = new SqlConnection(strCon);
+            string sql = "insert into Cliente values ";
+            sql +=  " (@nome, @endereco, @cidade, @estado, @fone);";
+            SqlCommand cmd = new SqlCommand(sql, conexao);
+            cmd.Parameters.AddWithValue("@nome", cliente.nome);
+            cmd.Parameters.AddWithValue("@endereco", cliente.endereco);
+            cmd.Parameters.AddWithValue("@cidade", cliente.cidade);
+            cmd.Parameters.AddWithValue("@estado", cliente.estado);
+            cmd.Parameters.AddWithValue("@fone", cliente.fone);
+            conexao.Open(); 
+            try
+            {
+                cmd.ExecuteNonQuery(); 
+            }
+            catch
+            {
+                Console.WriteLine("Erro insercao de cliente..."); 
+            }
+            finally
+            {
+                conexao.Close();
+            }
+
+        }
+
+
+        public void Update (Model.Cliente cliente)
+        {
+            SqlConnection conexao = new SqlConnection(strCon);
+            string sql = "Update Cliente set nome=@nome, endereco=@endereco, ";
+            sql += " cidade=@cidade, estado=@estado, fone=@fone ";
+            sql += " where id=@id;"; 
+            SqlCommand cmd = new SqlCommand(sql, conexao);
+            cmd.Parameters.AddWithValue("@id", cliente.id); 
+            cmd.Parameters.AddWithValue("@nome", cliente.nome);
+            cmd.Parameters.AddWithValue("@endereco", cliente.endereco);
+            cmd.Parameters.AddWithValue("@cidade", cliente.cidade);
+            cmd.Parameters.AddWithValue("@estado", cliente.estado);
+            cmd.Parameters.AddWithValue("@fone", cliente.fone);
+            conexao.Open();
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                Console.WriteLine("Erro insercao de cliente...");
+            }
+            finally
+            {
+                conexao.Close();
+            }
+
+        }
+
+
+        public void Delete (Model.Cliente cliente)
+        {
+            SqlConnection conexao = new SqlConnection(strCon);
+            string sql = "Delete from Cliente where id=@id;";
+            SqlCommand cmd = new SqlCommand(sql, conexao);
+            cmd.Parameters.AddWithValue("@id", cliente.id);
+
+            conexao.Open();
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                Console.WriteLine("Erro insercao de cliente...");
+            }
+            finally
+            {
+                conexao.Close();
+            }
+
+        }
+
+
+
     }
 }
