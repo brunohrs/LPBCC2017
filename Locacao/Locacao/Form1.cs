@@ -19,8 +19,8 @@ namespace Locacao
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Camadas.Model.Cliente cli = new Camadas.Model.Cliente();
-            cli.Id = 10; 
+            Camadas.DAL.Cliente dalCli = new Camadas.DAL.Cliente();
+            dataGridView1.DataSource = dalCli.Select(); 
         }
     }
 }
