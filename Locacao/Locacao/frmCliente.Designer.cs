@@ -124,6 +124,7 @@
             // 
             this.txtNome.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNome.Location = new System.Drawing.Point(413, 71);
+            this.txtNome.MaxLength = 35;
             this.txtNome.Name = "txtNome";
             this.txtNome.Size = new System.Drawing.Size(332, 34);
             this.txtNome.TabIndex = 8;
@@ -132,6 +133,7 @@
             // 
             this.txtEndereco.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtEndereco.Location = new System.Drawing.Point(413, 134);
+            this.txtEndereco.MaxLength = 35;
             this.txtEndereco.Name = "txtEndereco";
             this.txtEndereco.Size = new System.Drawing.Size(332, 34);
             this.txtEndereco.TabIndex = 9;
@@ -140,6 +142,7 @@
             // 
             this.txtCidade.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCidade.Location = new System.Drawing.Point(413, 197);
+            this.txtCidade.MaxLength = 25;
             this.txtCidade.Name = "txtCidade";
             this.txtCidade.Size = new System.Drawing.Size(193, 34);
             this.txtCidade.TabIndex = 10;
@@ -148,14 +151,17 @@
             // 
             this.txtEstado.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtEstado.Location = new System.Drawing.Point(413, 260);
+            this.txtEstado.MaxLength = 2;
             this.txtEstado.Name = "txtEstado";
             this.txtEstado.Size = new System.Drawing.Size(47, 34);
             this.txtEstado.TabIndex = 11;
+            this.txtEstado.Leave += new System.EventHandler(this.txtEstado_Leave);
             // 
             // txtFone
             // 
             this.txtFone.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtFone.Location = new System.Drawing.Point(413, 323);
+            this.txtFone.MaxLength = 15;
             this.txtFone.Name = "txtFone";
             this.txtFone.Size = new System.Drawing.Size(135, 34);
             this.txtFone.TabIndex = 12;
@@ -169,6 +175,7 @@
             this.btnInserir.TabIndex = 13;
             this.btnInserir.Text = "&Inserir";
             this.btnInserir.UseVisualStyleBackColor = true;
+            this.btnInserir.Click += new System.EventHandler(this.btnInserir_Click);
             // 
             // btnEditar
             // 
@@ -179,16 +186,18 @@
             this.btnEditar.TabIndex = 14;
             this.btnEditar.Text = "&Editar";
             this.btnEditar.UseVisualStyleBackColor = true;
+            this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
             // 
             // btnRemover
             // 
             this.btnRemover.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRemover.Location = new System.Drawing.Point(379, 408);
             this.btnRemover.Name = "btnRemover";
-            this.btnRemover.Size = new System.Drawing.Size(106, 42);
+            this.btnRemover.Size = new System.Drawing.Size(121, 42);
             this.btnRemover.TabIndex = 15;
             this.btnRemover.Text = "R&emover";
             this.btnRemover.UseVisualStyleBackColor = true;
+            this.btnRemover.Click += new System.EventHandler(this.btnRemover_Click);
             // 
             // btnGravar
             // 
@@ -199,6 +208,7 @@
             this.btnGravar.TabIndex = 16;
             this.btnGravar.Text = "&Gravar";
             this.btnGravar.UseVisualStyleBackColor = true;
+            this.btnGravar.Click += new System.EventHandler(this.btnGravar_Click);
             // 
             // btnCancelar
             // 
@@ -209,6 +219,7 @@
             this.btnCancelar.TabIndex = 17;
             this.btnCancelar.Text = "&Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // dgvClientes
             // 
@@ -236,7 +247,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(1038, 683);
             this.ControlBox = false;
             this.Controls.Add(this.btnSair);
