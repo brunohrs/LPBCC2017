@@ -45,6 +45,74 @@ namespace Locacao.Camadas.DAL
             return lstProduto; 
         }
 
+        public List<Model.Produto> SelectById(int id)
+        {
+            List<Model.Produto> lstProduto = new List<Model.Produto>();
+            SqlConnection conexao = new SqlConnection(strCon);
+            string sql = "select * from Produto where id=@id;";
+            SqlCommand cmd = new SqlCommand(sql, conexao);
+            cmd.Parameters.AddWithValue("@id", id);
+            conexao.Open();
+            try
+            {
+                SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (reader.Read())
+                {
+                    //instanciando objeto Produto     
+                    Model.Produto Produto = new Model.Produto();
+                    //carregar os dado no objeto Produto -- popular objeto
+                    Produto.id = Convert.ToInt32(reader["id"]);
+                    Produto.descricao = reader["descricao"].ToString();
+                    Produto.valor = Convert.ToSingle(reader["valor"].ToString());
+                    Produto.status = Convert.ToChar(reader["status"].ToString());
+                    lstProduto.Add(Produto);
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Erro - Sql Select Produto....;");
+            }
+            finally
+            {
+                conexao.Close();
+            }
+            return lstProduto;
+        }
+
+        public List<Model.Produto> SelectByDescricao(string desc)
+        {
+            List<Model.Produto> lstProduto = new List<Model.Produto>();
+            SqlConnection conexao = new SqlConnection(strCon);
+            string sql = "select * from Produto where (descricao like @desc);";
+            SqlCommand cmd = new SqlCommand(sql, conexao);
+            cmd.Parameters.AddWithValue("@desc", "%" + desc +"%");
+            conexao.Open();
+            try
+            {
+                SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (reader.Read())
+                {
+                    //instanciando objeto Produto     
+                    Model.Produto Produto = new Model.Produto();
+                    //carregar os dado no objeto Produto -- popular objeto
+                    Produto.id = Convert.ToInt32(reader["id"]);
+                    Produto.descricao = reader["descricao"].ToString();
+                    Produto.valor = Convert.ToSingle(reader["valor"].ToString());
+                    Produto.status = Convert.ToChar(reader["status"].ToString());
+                    lstProduto.Add(Produto);
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Erro - Sql Select Produto....;");
+            }
+            finally
+            {
+                conexao.Close();
+            }
+            return lstProduto;
+        }
+
 
         public void Insert(Model.Produto Produto)
         {

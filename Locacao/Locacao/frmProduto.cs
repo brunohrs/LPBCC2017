@@ -51,6 +51,7 @@ namespace Locacao
         {
             Camadas.BLL.Produto bllProd = new Camadas.BLL.Produto(); 
             dgvProdutos.DataSource = bllProd.Select();
+            pnlPesquisa.Visible = false; 
             Habilitar(false);
         }
 
@@ -153,6 +154,63 @@ namespace Locacao
                 txtValor.Text = dgvProdutos.SelectedRows[0].Cells["valor"].Value.ToString();
                 txtStatus.Text = dgvProdutos.SelectedRows[0].Cells["status"].Value.ToString();
             }
+        }
+
+        private void btnPesquisa_Click(object sender, EventArgs e)
+        {
+            pnlPesquisa.Visible = !pnlPesquisa.Visible;
+           if (pnlPesquisa.Visible==true)
+                 rdbTodos.Checked = true; 
+        }
+
+        private void rdbTodos_CheckedChanged(object sender, EventArgs e)
+        {
+            lblPesquisa.Visible = false;
+            txtPesquisa.Visible = false;
+            btnFiltrar.Visible = false;
+            Camadas.BLL.Produto bllProd = new Camadas.BLL.Produto();
+            dgvProdutos.DataSource = "";
+            dgvProdutos.DataSource = bllProd.Select(); 
+
+        }
+
+        private void rdbID_CheckedChanged(object sender, EventArgs e)
+        {
+            lblPesquisa.Text = "Informe o ID: ";
+            lblPesquisa.Visible = true;
+            txtPesquisa.Text = "";
+            txtPesquisa.Visible = true;
+            btnFiltrar.Visible = true;
+            txtPesquisa.Focus(); 
+        }
+
+        private void rdbNome_CheckedChanged(object sender, EventArgs e)
+        {
+            lblPesquisa.Text = "Informe a Descricao: ";
+            lblPesquisa.Visible = true;
+            txtPesquisa.Text = "";
+            txtPesquisa.Visible = true;
+            btnFiltrar.Visible = true;
+            txtPesquisa.Focus();
+
+        }
+
+        private void btnFiltrar_Click(object sender, EventArgs e)
+        {
+            List<Camadas.Model.Produto> lstPro = new List<Camadas.Model.Produto>();
+            Camadas.BLL.Produto bllProd = new Camadas.BLL.Produto();
+
+            if (rdbID.Checked)
+            {
+                if (txtPesquisa.Text != string.Empty)
+                    lstPro = bllProd.SelectById(Convert.ToInt32(txtPesquisa.Text));
+                else MessageBox.Show("ID vazio","Pesquisa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (rdbNome.Checked)
+                lstPro = bllProd.SelectByDescricao(txtPesquisa.Text.Trim());
+
+            dgvProdutos.DataSource = "";
+            dgvProdutos.DataSource = lstPro; 
         }
     }
 }
