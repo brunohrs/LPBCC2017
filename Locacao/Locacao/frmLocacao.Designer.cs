@@ -45,6 +45,7 @@
             this.dtpData = new System.Windows.Forms.DateTimePicker();
             this.cmbCliente = new System.Windows.Forms.ComboBox();
             this.pnlItemLoc = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
             this.dtpEntrega = new System.Windows.Forms.DateTimePicker();
             this.dgvItemLocacao = new System.Windows.Forms.DataGridView();
             this.btnCanIL = new System.Windows.Forms.Button();
@@ -62,7 +63,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLocacao)).BeginInit();
             this.pnlLocacao.SuspendLayout();
             this.pnlItemLoc.SuspendLayout();
@@ -114,6 +114,7 @@
             this.txtCliente.Name = "txtCliente";
             this.txtCliente.Size = new System.Drawing.Size(100, 30);
             this.txtCliente.TabIndex = 5;
+            this.txtCliente.Leave += new System.EventHandler(this.txtCliente_Leave);
             // 
             // dgvLocacao
             // 
@@ -123,6 +124,7 @@
             this.dgvLocacao.RowTemplate.Height = 24;
             this.dgvLocacao.Size = new System.Drawing.Size(1047, 150);
             this.dgvLocacao.TabIndex = 6;
+            this.dgvLocacao.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLocacao_CellContentClick);
             this.dgvLocacao.DoubleClick += new System.EventHandler(this.dgvLocacao_DoubleClick);
             // 
             // btnInsLoc
@@ -234,6 +236,7 @@
             this.cmbCliente.Name = "cmbCliente";
             this.cmbCliente.Size = new System.Drawing.Size(386, 33);
             this.cmbCliente.TabIndex = 14;
+            this.cmbCliente.SelectedIndexChanged += new System.EventHandler(this.cmbCliente_SelectedIndexChanged);
             // 
             // pnlItemLoc
             // 
@@ -263,6 +266,17 @@
             this.pnlItemLoc.Size = new System.Drawing.Size(1141, 389);
             this.pnlItemLoc.TabIndex = 15;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(488, -1);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(161, 25);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "Itens de Locação";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // dtpEntrega
             // 
             this.dtpEntrega.Format = System.Windows.Forms.DateTimePickerFormat.Short;
@@ -290,6 +304,7 @@
             this.btnCanIL.TabIndex = 16;
             this.btnCanIL.Text = "&Cancelar";
             this.btnCanIL.UseVisualStyleBackColor = true;
+            this.btnCanIL.Click += new System.EventHandler(this.btnCanIL_Click);
             // 
             // btnInsIL
             // 
@@ -336,8 +351,10 @@
             this.cmbProduto.FormattingEnabled = true;
             this.cmbProduto.Location = new System.Drawing.Point(287, 43);
             this.cmbProduto.Name = "cmbProduto";
-            this.cmbProduto.Size = new System.Drawing.Size(246, 33);
+            this.cmbProduto.Size = new System.Drawing.Size(381, 33);
             this.cmbProduto.TabIndex = 11;
+            this.cmbProduto.SelectedIndexChanged += new System.EventHandler(this.cmbProduto_SelectedIndexChanged);
+            this.cmbProduto.Leave += new System.EventHandler(this.cmbProduto_Leave);
             // 
             // txtDias
             // 
@@ -359,6 +376,7 @@
             this.txtProduto.Name = "txtProduto";
             this.txtProduto.Size = new System.Drawing.Size(75, 30);
             this.txtProduto.TabIndex = 7;
+            this.txtProduto.Leave += new System.EventHandler(this.txtProduto_Leave);
             // 
             // lblItmLocID
             // 
@@ -412,17 +430,6 @@
             this.label7.Size = new System.Drawing.Size(31, 25);
             this.label7.TabIndex = 1;
             this.label7.Text = "ID";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(488, -1);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(161, 25);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Itens de Locação";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // frmLocacao
             // 

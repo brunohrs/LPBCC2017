@@ -12,6 +12,8 @@ namespace Locacao
 {
     public partial class frmLocacao : Form
     {
+        Camadas.Model.Produto produto = new Camadas.Model.Produto();
+
         public frmLocacao()
         {
             InitializeComponent();
@@ -85,8 +87,29 @@ namespace Locacao
             Camadas.BLL.ItemLocacao bllItemLocacao = new Camadas.BLL.ItemLocacao();
 
             dgvLocacao.DataSource = bllLocacao.Select();
-
             dgvItemLocacao.DataSource = bllItemLocacao.Select();
+
+            //preencher combos
+            //ComboBox Cliente
+            Camadas.BLL.Cliente bllCliente = new Camadas.BLL.Cliente();
+            cmbCliente.DisplayMember = "nome";
+            cmbCliente.ValueMember = "id";
+            cmbCliente.DataSource = bllCliente.Select();
+
+            //combo Produtos
+            Camadas.BLL.Produto bllProdutos = new Camadas.BLL.Produto();
+            cmbProduto.DisplayMember = "descricao";
+            cmbProduto.ValueMember = "id";
+            cmbProduto.DataSource = bllProdutos.Select(); 
+
+        }
+
+        private void RecuperaValorItemLocacao()
+        {
+            Camadas.BLL.Produto bllProduto = new Camadas.BLL.Produto();
+            List<Camadas.Model.Produto> lstProduto = new List<Camadas.Model.Produto>(); 
+            lstProduto = bllProduto.SelectById(Convert.ToInt32(txtProduto.Text));
+            produto = lstProduto[0]; 
         }
 
         private void btnInsLoc_Click(object sender, EventArgs e)
@@ -183,6 +206,12 @@ namespace Locacao
                 lblLocID.Text = dgvLocacao.SelectedRows[0].Cells["id"].Value.ToString();
                 txtCliente.Text = dgvLocacao.SelectedRows[0].Cells["cliente"].Value.ToString();
                 dtpData.Value = Convert.ToDateTime(dgvLocacao.SelectedRows[0].Cells["data"].Value.ToString());
+
+                //Carregar gridview itens de locacaçao
+                Camadas.BLL.ItemLocacao bllItemLocacao = new Camadas.BLL.ItemLocacao();
+                dgvItemLocacao.DataSource = "";
+                int idLoc = Convert.ToInt32(lblLocID.Text);
+                dgvItemLocacao.DataSource = bllItemLocacao.SelectByLocacao(idLoc);
             }
         }
 
@@ -205,16 +234,23 @@ namespace Locacao
 
         private void btnInsIL_Click(object sender, EventArgs e)
         {
-            
-            if (lblLocID.Text!="" && lblLocID.Text!="-1")
+
+            if (lblLocID.Text != "" && lblLocID.Text != "-1")
             {
                 LimpaControlesIL();
                 lblItmLocID.Text = "-1";
+                dtpEntrega.Value = dtpData.Value;
+                dtpEntrega.Value =  dtpEntrega.Value.AddDays(1);
+                txtDias.Text = "1"; 
                 HabilitaControlesItemLocacao(true);
                 txtProduto.Focus();
             }
+            else
+            {
+                string msg = "Selecione uma locação para inserir itens para a mesma";
+                MessageBox.Show(msg, "Inserir Item Locação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
-
         private void btnUpdIL_Click(object sender, EventArgs e)
         {
             if (lblItmLocID.Text != string.Empty)
@@ -286,10 +322,72 @@ namespace Locacao
                     bllItemLocacao.Insert(itemLocacao);
                 else bllItemLocacao.Update(itemLocacao);
             }
+            //Carregar gridview itens de locacaçao
             dgvItemLocacao.DataSource = "";
-            dgvItemLocacao.DataSource = bllItemLocacao.Select();  //atualiza a grid
+            int idLoc = Convert.ToInt32(lblLocID.Text);
+            dgvItemLocacao.DataSource = bllItemLocacao.SelectByLocacao(idLoc);
+
             LimpaControlesIL(); //limpa campos
             HabilitaControlesItemLocacao(false);  //desabilita controles
+        }
+
+        private void cmbCliente_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtCliente.Text = cmbCliente.SelectedValue.ToString(); 
+        }
+
+        private void txtCliente_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                cmbCliente.SelectedValue = Convert.ToInt32(txtCliente.Text); 
+            }
+            catch 
+            {
+                string msg = "Id cliente não existe " + txtCliente.Text;
+                MessageBox.Show(msg, "Cliente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtCliente.Text = ""; 
+                txtCliente.Focus(); 
+            }
+        }
+
+        private void btnCanIL_Click(object sender, EventArgs e)
+        {
+            LimpaControlesIL();
+            HabilitaControlesItemLocacao(false); 
+        }
+
+        private void cmbProduto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtProduto.Text = cmbProduto.SelectedValue.ToString(); 
+        }
+
+        private void txtProduto_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                cmbProduto.SelectedValue = Convert.ToInt32(txtProduto.Text);
+                RecuperaValorItemLocacao();
+                txtValor.Text = produto.valor.ToString(); 
+            }
+            catch
+            {
+                string msg= "Codigo Produto invalido: " + txtProduto.Text;
+                MessageBox.Show(msg, "Produto", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtProduto.Text = "";
+                txtProduto.Focus();  
+            }
+        }
+
+        private void cmbProduto_Leave(object sender, EventArgs e)
+        {
+            RecuperaValorItemLocacao();
+            txtValor.Text = produto.valor.ToString(); 
+        }
+
+        private void dgvLocacao_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
