@@ -45,8 +45,10 @@
             this.dtpData = new System.Windows.Forms.DateTimePicker();
             this.cmbCliente = new System.Windows.Forms.ComboBox();
             this.pnlItemLoc = new System.Windows.Forms.Panel();
+            this.btnILBaixa = new System.Windows.Forms.Button();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.dtpEntrega = new System.Windows.Forms.DateTimePicker();
             this.dgvItemLocacao = new System.Windows.Forms.DataGridView();
             this.btnCanIL = new System.Windows.Forms.Button();
             this.btnInsIL = new System.Windows.Forms.Button();
@@ -54,8 +56,6 @@
             this.btnDelIL = new System.Windows.Forms.Button();
             this.btnUpdIL = new System.Windows.Forms.Button();
             this.cmbProduto = new System.Windows.Forms.ComboBox();
-            this.txtDias = new System.Windows.Forms.TextBox();
-            this.txtValor = new System.Windows.Forms.TextBox();
             this.txtProduto = new System.Windows.Forms.TextBox();
             this.lblItmLocID = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -63,6 +63,11 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.lblTotal = new System.Windows.Forms.Label();
+            this.lblDias = new System.Windows.Forms.Label();
+            this.lblEntrega = new System.Windows.Forms.Label();
+            this.txtValor = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLocacao)).BeginInit();
             this.pnlLocacao.SuspendLayout();
             this.pnlItemLoc.SuspendLayout();
@@ -242,8 +247,15 @@
             // 
             this.pnlItemLoc.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.pnlItemLoc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlItemLoc.Controls.Add(this.txtValor);
+            this.pnlItemLoc.Controls.Add(this.lblEntrega);
+            this.pnlItemLoc.Controls.Add(this.lblDias);
+            this.pnlItemLoc.Controls.Add(this.lblTotal);
+            this.pnlItemLoc.Controls.Add(this.label12);
+            this.pnlItemLoc.Controls.Add(this.btnILBaixa);
+            this.pnlItemLoc.Controls.Add(this.lblStatus);
+            this.pnlItemLoc.Controls.Add(this.label5);
             this.pnlItemLoc.Controls.Add(this.label6);
-            this.pnlItemLoc.Controls.Add(this.dtpEntrega);
             this.pnlItemLoc.Controls.Add(this.dgvItemLocacao);
             this.pnlItemLoc.Controls.Add(this.btnCanIL);
             this.pnlItemLoc.Controls.Add(this.btnInsIL);
@@ -251,8 +263,6 @@
             this.pnlItemLoc.Controls.Add(this.btnDelIL);
             this.pnlItemLoc.Controls.Add(this.btnUpdIL);
             this.pnlItemLoc.Controls.Add(this.cmbProduto);
-            this.pnlItemLoc.Controls.Add(this.txtDias);
-            this.pnlItemLoc.Controls.Add(this.txtValor);
             this.pnlItemLoc.Controls.Add(this.txtProduto);
             this.pnlItemLoc.Controls.Add(this.lblItmLocID);
             this.pnlItemLoc.Controls.Add(this.label11);
@@ -263,8 +273,36 @@
             this.pnlItemLoc.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pnlItemLoc.Location = new System.Drawing.Point(35, 429);
             this.pnlItemLoc.Name = "pnlItemLoc";
-            this.pnlItemLoc.Size = new System.Drawing.Size(1141, 389);
+            this.pnlItemLoc.Size = new System.Drawing.Size(1136, 415);
             this.pnlItemLoc.TabIndex = 15;
+            // 
+            // btnILBaixa
+            // 
+            this.btnILBaixa.Location = new System.Drawing.Point(722, 178);
+            this.btnILBaixa.Name = "btnILBaixa";
+            this.btnILBaixa.Size = new System.Drawing.Size(125, 37);
+            this.btnILBaixa.TabIndex = 21;
+            this.btnILBaixa.Text = "Baixar";
+            this.btnILBaixa.UseVisualStyleBackColor = true;
+            this.btnILBaixa.Click += new System.EventHandler(this.btnILBaixa_Click);
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblStatus.Location = new System.Drawing.Point(630, 51);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(35, 28);
+            this.lblStatus.TabIndex = 20;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(550, 51);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(74, 25);
+            this.label5.TabIndex = 19;
+            this.label5.Text = "Status:";
             // 
             // label6
             // 
@@ -277,30 +315,22 @@
             this.label6.Text = "Itens de Locação";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // dtpEntrega
-            // 
-            this.dtpEntrega.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpEntrega.Location = new System.Drawing.Point(206, 82);
-            this.dtpEntrega.Name = "dtpEntrega";
-            this.dtpEntrega.Size = new System.Drawing.Size(141, 30);
-            this.dtpEntrega.TabIndex = 18;
-            // 
             // dgvItemLocacao
             // 
             this.dgvItemLocacao.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvItemLocacao.Location = new System.Drawing.Point(10, 214);
+            this.dgvItemLocacao.Location = new System.Drawing.Point(23, 234);
             this.dgvItemLocacao.Name = "dgvItemLocacao";
             this.dgvItemLocacao.RowTemplate.Height = 24;
-            this.dgvItemLocacao.Size = new System.Drawing.Size(1100, 140);
+            this.dgvItemLocacao.Size = new System.Drawing.Size(1100, 153);
             this.dgvItemLocacao.TabIndex = 17;
             this.dgvItemLocacao.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItemLocacao_CellContentClick);
             this.dgvItemLocacao.DoubleClick += new System.EventHandler(this.dgvItemLocacao_DoubleClick);
             // 
             // btnCanIL
             // 
-            this.btnCanIL.Location = new System.Drawing.Point(997, 151);
+            this.btnCanIL.Location = new System.Drawing.Point(986, 178);
             this.btnCanIL.Name = "btnCanIL";
-            this.btnCanIL.Size = new System.Drawing.Size(113, 37);
+            this.btnCanIL.Size = new System.Drawing.Size(125, 37);
             this.btnCanIL.TabIndex = 16;
             this.btnCanIL.Text = "&Cancelar";
             this.btnCanIL.UseVisualStyleBackColor = true;
@@ -308,9 +338,9 @@
             // 
             // btnInsIL
             // 
-            this.btnInsIL.Location = new System.Drawing.Point(441, 151);
+            this.btnInsIL.Location = new System.Drawing.Point(326, 178);
             this.btnInsIL.Name = "btnInsIL";
-            this.btnInsIL.Size = new System.Drawing.Size(113, 37);
+            this.btnInsIL.Size = new System.Drawing.Size(125, 37);
             this.btnInsIL.TabIndex = 15;
             this.btnInsIL.Text = "&Inserir";
             this.btnInsIL.UseVisualStyleBackColor = true;
@@ -318,9 +348,9 @@
             // 
             // btnSaveIL
             // 
-            this.btnSaveIL.Location = new System.Drawing.Point(865, 151);
+            this.btnSaveIL.Location = new System.Drawing.Point(854, 178);
             this.btnSaveIL.Name = "btnSaveIL";
-            this.btnSaveIL.Size = new System.Drawing.Size(113, 37);
+            this.btnSaveIL.Size = new System.Drawing.Size(125, 37);
             this.btnSaveIL.TabIndex = 14;
             this.btnSaveIL.Text = "&Gravar";
             this.btnSaveIL.UseVisualStyleBackColor = true;
@@ -328,9 +358,9 @@
             // 
             // btnDelIL
             // 
-            this.btnDelIL.Location = new System.Drawing.Point(719, 151);
+            this.btnDelIL.Location = new System.Drawing.Point(590, 178);
             this.btnDelIL.Name = "btnDelIL";
-            this.btnDelIL.Size = new System.Drawing.Size(113, 37);
+            this.btnDelIL.Size = new System.Drawing.Size(125, 37);
             this.btnDelIL.TabIndex = 13;
             this.btnDelIL.Text = "&Remover";
             this.btnDelIL.UseVisualStyleBackColor = true;
@@ -338,9 +368,9 @@
             // 
             // btnUpdIL
             // 
-            this.btnUpdIL.Location = new System.Drawing.Point(580, 151);
+            this.btnUpdIL.Location = new System.Drawing.Point(458, 178);
             this.btnUpdIL.Name = "btnUpdIL";
-            this.btnUpdIL.Size = new System.Drawing.Size(113, 37);
+            this.btnUpdIL.Size = new System.Drawing.Size(125, 37);
             this.btnUpdIL.TabIndex = 12;
             this.btnUpdIL.Text = "&Editar";
             this.btnUpdIL.UseVisualStyleBackColor = true;
@@ -351,36 +381,24 @@
             this.cmbProduto.FormattingEnabled = true;
             this.cmbProduto.Location = new System.Drawing.Point(287, 43);
             this.cmbProduto.Name = "cmbProduto";
-            this.cmbProduto.Size = new System.Drawing.Size(381, 33);
+            this.cmbProduto.Size = new System.Drawing.Size(246, 33);
             this.cmbProduto.TabIndex = 11;
             this.cmbProduto.SelectedIndexChanged += new System.EventHandler(this.cmbProduto_SelectedIndexChanged);
             this.cmbProduto.Leave += new System.EventHandler(this.cmbProduto_Leave);
             // 
-            // txtDias
-            // 
-            this.txtDias.Location = new System.Drawing.Point(206, 156);
-            this.txtDias.Name = "txtDias";
-            this.txtDias.Size = new System.Drawing.Size(100, 30);
-            this.txtDias.TabIndex = 10;
-            // 
-            // txtValor
-            // 
-            this.txtValor.Location = new System.Drawing.Point(206, 119);
-            this.txtValor.Name = "txtValor";
-            this.txtValor.Size = new System.Drawing.Size(100, 30);
-            this.txtValor.TabIndex = 9;
-            // 
             // txtProduto
             // 
-            this.txtProduto.Location = new System.Drawing.Point(206, 45);
+            this.txtProduto.Location = new System.Drawing.Point(206, 46);
             this.txtProduto.Name = "txtProduto";
             this.txtProduto.Size = new System.Drawing.Size(75, 30);
             this.txtProduto.TabIndex = 7;
+            this.txtProduto.TextChanged += new System.EventHandler(this.txtProduto_TextChanged);
             this.txtProduto.Leave += new System.EventHandler(this.txtProduto_Leave);
             // 
             // lblItmLocID
             // 
             this.lblItmLocID.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblItmLocID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblItmLocID.Location = new System.Drawing.Point(206, 13);
             this.lblItmLocID.Name = "lblItmLocID";
             this.lblItmLocID.Size = new System.Drawing.Size(75, 25);
@@ -398,11 +416,11 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(136, 122);
+            this.label10.Location = new System.Drawing.Point(107, 127);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(64, 25);
+            this.label10.Size = new System.Drawing.Size(93, 25);
             this.label10.TabIndex = 4;
-            this.label10.Text = "Valor:";
+            this.label10.Text = "Valor R$:";
             // 
             // label9
             // 
@@ -430,6 +448,50 @@
             this.label7.Size = new System.Drawing.Size(31, 25);
             this.label7.TabIndex = 1;
             this.label7.Text = "ID";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(109, 203);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(91, 25);
+            this.label12.TabIndex = 22;
+            this.label12.Text = "Total R$:";
+            this.label12.Click += new System.EventHandler(this.label12_Click);
+            // 
+            // lblTotal
+            // 
+            this.lblTotal.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblTotal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTotal.Location = new System.Drawing.Point(206, 198);
+            this.lblTotal.Name = "lblTotal";
+            this.lblTotal.Size = new System.Drawing.Size(100, 30);
+            this.lblTotal.TabIndex = 23;
+            // 
+            // lblDias
+            // 
+            this.lblDias.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblDias.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblDias.Location = new System.Drawing.Point(206, 160);
+            this.lblDias.Name = "lblDias";
+            this.lblDias.Size = new System.Drawing.Size(97, 30);
+            this.lblDias.TabIndex = 25;
+            // 
+            // lblEntrega
+            // 
+            this.lblEntrega.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblEntrega.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblEntrega.Location = new System.Drawing.Point(206, 87);
+            this.lblEntrega.Name = "lblEntrega";
+            this.lblEntrega.Size = new System.Drawing.Size(166, 30);
+            this.lblEntrega.TabIndex = 26;
+            // 
+            // txtValor
+            // 
+            this.txtValor.Location = new System.Drawing.Point(206, 124);
+            this.txtValor.Name = "txtValor";
+            this.txtValor.Size = new System.Drawing.Size(100, 30);
+            this.txtValor.TabIndex = 27;
             // 
             // frmLocacao
             // 
@@ -478,8 +540,6 @@
         private System.Windows.Forms.Button btnDelIL;
         private System.Windows.Forms.Button btnUpdIL;
         private System.Windows.Forms.ComboBox cmbProduto;
-        private System.Windows.Forms.TextBox txtDias;
-        private System.Windows.Forms.TextBox txtValor;
         private System.Windows.Forms.TextBox txtProduto;
         private System.Windows.Forms.Label lblItmLocID;
         private System.Windows.Forms.Label label11;
@@ -489,6 +549,13 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DateTimePicker dtpData;
-        private System.Windows.Forms.DateTimePicker dtpEntrega;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button btnILBaixa;
+        private System.Windows.Forms.Label lblTotal;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label lblDias;
+        private System.Windows.Forms.Label lblEntrega;
+        private System.Windows.Forms.TextBox txtValor;
     }
 }

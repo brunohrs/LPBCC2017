@@ -12,7 +12,7 @@ namespace Locacao
 {
     public partial class frmLocacao : Form
     {
-        Camadas.Model.Produto produto = new Camadas.Model.Produto();
+        Camadas.Model.Produto produto = new Camadas.Model.Produto(); 
 
         public frmLocacao()
         {
@@ -51,9 +51,6 @@ namespace Locacao
         {
             txtProduto.Enabled = status;
             cmbProduto.Enabled = status;
-            dtpEntrega.Enabled = status;
-            txtValor.Enabled = status;
-            txtDias.Enabled = status; 
             dgvItemLocacao.Enabled = !status;
 
             //botões
@@ -68,14 +65,36 @@ namespace Locacao
         {
             lblItmLocID.Text = "";
             txtProduto.Text = "";
-            dtpEntrega.Value = DateTime.Now.Date; 
+            lblEntrega.Text = ""; 
+            lblDias.Text = "";
             txtValor.Text = "";
-            txtDias.Text = ""; 
+            lblTotal.Text = "";
+            lblStatus.Text = ""; 
         }
         private void pnlLocacao_Paint(object sender, PaintEventArgs e)
         {
 
         }
+        private void RecuperaDadosProduto()
+        {
+            Camadas.BLL.Produto bllProduto = new Camadas.BLL.Produto();
+            List<Camadas.Model.Produto> lstProd = new List<Camadas.Model.Produto>();
+            lstProd = bllProduto.SelectById(Convert.ToInt32(txtProduto.Text));
+            if (lstProd != null)
+                produto = lstProd[0];
+            else  MessageBox.Show("Produto não encontrado");
+            if (produto.status != 'L') {
+                MessageBox.Show("Produto não pode ser locado!! " + produto.status);
+                cmbProduto.Focus();                
+            }
+            else
+            {
+                lblStatus.Text = produto.status.ToString();
+                txtValor.Text = produto.valor.ToString(); 
+            }
+
+        }
+
 
         private void frmLocacao_Load(object sender, EventArgs e)
         {
@@ -89,27 +108,19 @@ namespace Locacao
             dgvLocacao.DataSource = bllLocacao.Select();
             dgvItemLocacao.DataSource = bllItemLocacao.Select();
 
-            //preencher combos
-            //ComboBox Cliente
+            //Carregamento de Combobox
+            //Cliente
             Camadas.BLL.Cliente bllCliente = new Camadas.BLL.Cliente();
             cmbCliente.DisplayMember = "nome";
-            cmbCliente.ValueMember = "id";
+            cmbCliente.ValueMember = "id"; 
             cmbCliente.DataSource = bllCliente.Select();
 
-            //combo Produtos
-            Camadas.BLL.Produto bllProdutos = new Camadas.BLL.Produto();
+            //Produto
+            Camadas.BLL.Produto bllProduto = new Camadas.BLL.Produto();
             cmbProduto.DisplayMember = "descricao";
             cmbProduto.ValueMember = "id";
-            cmbProduto.DataSource = bllProdutos.Select(); 
+            cmbProduto.DataSource = bllProduto.Select(); 
 
-        }
-
-        private void RecuperaValorItemLocacao()
-        {
-            Camadas.BLL.Produto bllProduto = new Camadas.BLL.Produto();
-            List<Camadas.Model.Produto> lstProduto = new List<Camadas.Model.Produto>(); 
-            lstProduto = bllProduto.SelectById(Convert.ToInt32(txtProduto.Text));
-            produto = lstProduto[0]; 
         }
 
         private void btnInsLoc_Click(object sender, EventArgs e)
@@ -205,13 +216,15 @@ namespace Locacao
             {
                 lblLocID.Text = dgvLocacao.SelectedRows[0].Cells["id"].Value.ToString();
                 txtCliente.Text = dgvLocacao.SelectedRows[0].Cells["cliente"].Value.ToString();
+                cmbCliente.SelectedValue = Convert.ToInt32(txtCliente.Text); 
                 dtpData.Value = Convert.ToDateTime(dgvLocacao.SelectedRows[0].Cells["data"].Value.ToString());
 
-                //Carregar gridview itens de locacaçao
+                //atualizar gridview itens locação
                 Camadas.BLL.ItemLocacao bllItemLocacao = new Camadas.BLL.ItemLocacao();
-                dgvItemLocacao.DataSource = "";
-                int idLoc = Convert.ToInt32(lblLocID.Text);
-                dgvItemLocacao.DataSource = bllItemLocacao.SelectByLocacao(idLoc);
+                int locacao = Convert.ToInt32(lblLocID.Text);
+                dgvItemLocacao.DataSource = ""; 
+                dgvItemLocacao.DataSource = bllItemLocacao.SelectByLocacao(locacao);  
+
             }
         }
 
@@ -221,9 +234,20 @@ namespace Locacao
             {
                 lblItmLocID.Text = dgvItemLocacao.SelectedRows[0].Cells["id"].Value.ToString();
                 txtProduto.Text = dgvItemLocacao.SelectedRows[0].Cells["produto"].Value.ToString();
-                dtpEntrega.Value = Convert.ToDateTime(dgvItemLocacao.SelectedRows[0].Cells["entrega"].Value.ToString());
+                lblEntrega.Text = dgvItemLocacao.SelectedRows[0].Cells["entrega"].Value.ToString();
                 txtValor.Text = dgvItemLocacao.SelectedRows[0].Cells["valor"].Value.ToString();
-                txtDias.Text = dgvItemLocacao.SelectedRows[0].Cells["dias"].Value.ToString();
+                lblDias.Text = dgvItemLocacao.SelectedRows[0].Cells["dias"].Value.ToString();
+                if (Convert.ToInt32(lblDias.Text) == 0)
+                {
+                    lblStatus.Text = "E";
+                    btnILBaixa.Enabled = true;
+                }
+                else {
+                    lblStatus.Text = "L";
+                    btnILBaixa.Enabled = false;
+                }
+                float total = Convert.ToInt32(lblDias.Text) * Convert.ToSingle(txtValor.Text);
+                lblTotal.Text = total.ToString(); 
             }
         }
 
@@ -234,23 +258,25 @@ namespace Locacao
 
         private void btnInsIL_Click(object sender, EventArgs e)
         {
-
-            if (lblLocID.Text != "" && lblLocID.Text != "-1")
+            
+            if (lblLocID.Text!="" && lblLocID.Text!="-1")
             {
                 LimpaControlesIL();
                 lblItmLocID.Text = "-1";
-                dtpEntrega.Value = dtpData.Value;
-                dtpEntrega.Value =  dtpEntrega.Value.AddDays(1);
-                txtDias.Text = "1"; 
                 HabilitaControlesItemLocacao(true);
-                txtProduto.Focus();
+                lblEntrega.Text = dtpData.Value.AddDays(1).ToString();
+                lblDias.Text = "0";
+                lblTotal.Text = "0";
+                btnILBaixa.Enabled = false;
+                cmbProduto.Focus();
             }
             else
             {
-                string msg = "Selecione uma locação para inserir itens para a mesma";
-                MessageBox.Show(msg, "Inserir Item Locação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string msg = "Não há locação selecionada!!!";
+                MessageBox.Show(msg, "Itens Locação", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
         private void btnUpdIL_Click(object sender, EventArgs e)
         {
             if (lblItmLocID.Text != string.Empty)
@@ -314,19 +340,16 @@ namespace Locacao
                 itemLocacao.id = id;
                 itemLocacao.locacao = Convert.ToInt32(lblLocID.Text);
                 itemLocacao.produto = Convert.ToInt32(txtProduto.Text);
-                itemLocacao.entrega = dtpEntrega.Value;
+                itemLocacao.entrega = Convert.ToDateTime(lblEntrega.Text);
                 itemLocacao.valor = Convert.ToSingle(txtValor.Text);
-                itemLocacao.dias = Convert.ToInt32(txtDias.Text);
+                itemLocacao.dias = Convert.ToInt32(lblDias.Text);
 
                 if (id == -1)  //-1 indica inserir 
                     bllItemLocacao.Insert(itemLocacao);
                 else bllItemLocacao.Update(itemLocacao);
             }
-            //Carregar gridview itens de locacaçao
             dgvItemLocacao.DataSource = "";
-            int idLoc = Convert.ToInt32(lblLocID.Text);
-            dgvItemLocacao.DataSource = bllItemLocacao.SelectByLocacao(idLoc);
-
+            dgvItemLocacao.DataSource = bllItemLocacao.SelectByLocacao(Convert.ToInt32(lblLocID.Text));  //atualiza a grid
             LimpaControlesIL(); //limpa campos
             HabilitaControlesItemLocacao(false);  //desabilita controles
         }
@@ -344,22 +367,30 @@ namespace Locacao
             }
             catch 
             {
-                string msg = "Id cliente não existe " + txtCliente.Text;
+                string msg = "ID Cliente Inválido!!!";
                 MessageBox.Show(msg, "Cliente", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txtCliente.Text = ""; 
+                txtCliente.Text = "";
                 txtCliente.Focus(); 
             }
+        }
+
+        private void dgvLocacao_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
 
         private void btnCanIL_Click(object sender, EventArgs e)
         {
             LimpaControlesIL();
-            HabilitaControlesItemLocacao(false); 
+            HabilitaControlesItemLocacao(false);
+            Camadas.BLL.ItemLocacao bllItemLocacao = new Camadas.BLL.ItemLocacao();
+            dgvItemLocacao.DataSource = bllItemLocacao.SelectByLocacao(Convert.ToInt32(lblLocID.Text));  //atualiza a grid
         }
 
         private void cmbProduto_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txtProduto.Text = cmbProduto.SelectedValue.ToString(); 
+            txtProduto.Text = cmbProduto.SelectedValue.ToString();
+            RecuperaDadosProduto();
         }
 
         private void txtProduto_Leave(object sender, EventArgs e)
@@ -367,25 +398,63 @@ namespace Locacao
             try
             {
                 cmbProduto.SelectedValue = Convert.ToInt32(txtProduto.Text);
-                RecuperaValorItemLocacao();
-                txtValor.Text = produto.valor.ToString(); 
+                RecuperaDadosProduto();
+                txtValor.Focus();
             }
-            catch
+            catch 
             {
-                string msg= "Codigo Produto invalido: " + txtProduto.Text;
-                MessageBox.Show(msg, "Produto", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string msg="Não existe código do Produto selecionado";
+                MessageBox.Show(msg, "Combo Produto", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 txtProduto.Text = "";
-                txtProduto.Focus();  
+                txtProduto.Focus();
             }
         }
 
         private void cmbProduto_Leave(object sender, EventArgs e)
         {
-            RecuperaValorItemLocacao();
-            txtValor.Text = produto.valor.ToString(); 
+            RecuperaDadosProduto(); 
         }
 
-        private void dgvLocacao_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void txtProduto_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnILBaixa_Click(object sender, EventArgs e)
+        {
+            Camadas.BLL.ItemLocacao bllItemLocacao = new Camadas.BLL.ItemLocacao();
+            Camadas.Model.ItemLocacao itemLocacao = new Camadas.Model.ItemLocacao();
+            int id = Convert.ToInt32(lblItmLocID.Text);
+
+            string msg = "";
+            if (id != -1) // id=-1 (Inclusão) e id!=-1 (atualização)
+                msg = "Confirma Baixa de Item de Locação?";
+           
+            DialogResult resp;
+            resp = MessageBox.Show(msg, "Baixa Item de Locação", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+            if (resp == DialogResult.Yes)
+            {
+                itemLocacao.id = id;
+                itemLocacao.locacao = Convert.ToInt32(lblLocID.Text);
+                itemLocacao.produto = Convert.ToInt32(txtProduto.Text);
+                itemLocacao.entrega = DateTime.Now;
+                
+                itemLocacao.valor = Convert.ToSingle(txtValor.Text);
+
+                TimeSpan date = DateTime.Now - dtpData.Value;
+                int totalDias = date.Days;
+
+                itemLocacao.dias = totalDias;
+
+               bllItemLocacao.Baixa(itemLocacao);
+            }
+            dgvItemLocacao.DataSource = "";
+            dgvItemLocacao.DataSource = bllItemLocacao.SelectByLocacao(Convert.ToInt32(lblLocID.Text));  //atualiza a grid
+            LimpaControlesIL(); //limpa campos
+            HabilitaControlesItemLocacao(false);
+        }
+
+        private void label12_Click(object sender, EventArgs e)
         {
 
         }

@@ -50,5 +50,26 @@ namespace Locacao.Camadas.BLL
             dalItmLoc.Delete(ItemLocacao);  
         }
 
+        public void Baixa(Model.ItemLocacao ItemLocacao)
+        {
+            DAL.ItemLocacao dalItmLoc = new DAL.ItemLocacao();
+            //atualização da tabela produto para gravar L  de Livre
+            Camadas.BLL.Produto bllProd = new Camadas.BLL.Produto();
+            //recupera produto
+            Model.Produto produto = new Model.Produto();
+            List<Model.Produto> lstProd = new List<Model.Produto>();
+            lstProd = bllProd.SelectById(ItemLocacao.produto);
+            produto = lstProd[0];
+            //muda status produto
+            produto.status = 'L';
+
+            //atualiza produto
+            bllProd.Update(produto);
+
+            //gravar item locacao
+            dalItmLoc.Update(ItemLocacao);
+
+        }
+
     }
 }
